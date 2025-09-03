@@ -2,6 +2,12 @@
 let state = [];              // [{id, text, done, createdAt}]
 let filter = 'all'; // 
 
+const storeKey = {
+  todos: "todos",
+  filters: "filters"
+}
+
+
 const $form   = document.querySelector('#todo-form');
 const $input  = document.querySelector('#todo-input');
 const $list   = document.querySelector('#todo-list');
@@ -57,6 +63,8 @@ function render() {
     $btn.classList.toggle('is-active', $btn.dataset.filter === filter);
   });
 
+  saveLocalStorage()
+
 }
 
 function addTodo(text) {
@@ -90,9 +98,26 @@ $filter.addEventListener('click', (e) => {
     $btn.classList.toggle('is-active', $btn.dataset.filter === filter);
   });
 
+  localStorage.setItem(storeKey.filters, JSON.stringify(filter));
   render()
 
 });
 
+function saveLocalStorage() {
+  localStorage.setItem(storeKey, JSON.stringify(state));
+}
+
+function loadLocalStorage() {
+  const todos = JSON.parse(localStorage.getItem(storeKey.todos));
+  const filters = JSON.parse(localStorage.getItem(storeKey.filters)) || 'all';
+
+  filter = filters;
+  if (Array.isArray(todos)) {
+    state = todos;
+  }
+}
+
 // 초기 호출
+loadLocalStorage()
 render();
+
