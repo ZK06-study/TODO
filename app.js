@@ -104,7 +104,7 @@ $filter.addEventListener('click', (e) => {
 });
 
 function saveLocalStorage() {
-  localStorage.setItem(storeKey, JSON.stringify(state));
+  localStorage.setItem(storeKey.todos, JSON.stringify(state));
 }
 
 function loadLocalStorage() {
