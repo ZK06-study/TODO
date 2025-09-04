@@ -1,7 +1,3 @@
-localStorage
-저장 복원 기능 추가 
+# 📝 Todo List - Vanilla JavaScript
 
-1. todo list 내 값을 저장, 삭제, 수정
-2. 페이지 새로고침 시 localStorage 내 데이터 불러오도록 설정
-3. 전체, 완료, 미완료를 
-
+> 순수 JavaScript로 만든 할일 관리 앱

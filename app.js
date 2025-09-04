@@ -1,11 +1,11 @@
+
+import { getItem, setItem } from './storage.js';
+import {FILTER,STORE_KEY} from "./mutation.js"
+
 // 상태 & DOM 캐시 (가이드만 제공)
 let state = [];              // [{id, text, done, createdAt}]
-let filter = 'all'; // 
+let filter = FILTER.ALL; //
 
-const storeKey = {
-  todos: "todos",
-  filters: "filters"
-}
 
 
 const $form   = document.querySelector('#todo-form');
@@ -39,14 +39,16 @@ $list.addEventListener('click', (e) => {
 
  })
 
+
+
+
+
 function render() {
-
-
   let filtered = state;
-  if (filter === 'active') {
+  if (filter === FILTER.ACTIVE) {
     filtered = state.filter(item => !item.done);
     
-  } else if (filter === 'done') {
+  } else if (filter === FILTER.DONE) {
     filtered = state.filter(item => item.done);
   }
 
@@ -68,8 +70,6 @@ function render() {
 }
 
 function addTodo(text) {
-
- 
   state.push({ id: uid(), text, done: false, createdAt: Date.now() });
   render();
 }
@@ -98,18 +98,18 @@ $filter.addEventListener('click', (e) => {
     $btn.classList.toggle('is-active', $btn.dataset.filter === filter);
   });
 
-  localStorage.setItem(storeKey.filters, JSON.stringify(filter));
+  setItem(STORE_KEY.FILTERS, filter);
   render()
 
 });
 
 function saveLocalStorage() {
-  localStorage.setItem(storeKey.todos, JSON.stringify(state));
+  setItem(STORE_KEY.TODOS, state);
 }
 
 function loadLocalStorage() {
-  const todos = JSON.parse(localStorage.getItem(storeKey.todos));
-  const filters = JSON.parse(localStorage.getItem(storeKey.filters)) || 'all';
+  const todos = getItem(STORE_KEY.TODOS);
+  const filters = getItem(STORE_KEY.FILTERS) || FILTER.ALL;
 
   filter = filters;
   if (Array.isArray(todos)) {
@@ -120,4 +120,6 @@ function loadLocalStorage() {
 // 초기 호출
 loadLocalStorage()
 render();
+
+
 
