@@ -8,21 +8,32 @@ const $input = document.querySelector('#todo-input');
 const $list   = document.querySelector('#todo-list');
 const $filter = document.querySelector('.filters');
 
-// 유틸만 제공 (학생이 사용할 수 있게)
 const uid = () => Math.random().toString(36).slice(2, 9);
 
+
+
 function render() {
-  // TODO: filter에 맞게 state를 걸러서 <li> 목록을 그리기
-  // TODO: 필터 버튼 is-active 토글
+  // 필터 버튼 is-active 토글
+  let filterState = state
+  if (filter === 'active') {
+    filterState = state.filter(item => !item.done)
+  } else if (filter === 'done') {
+    filterState = state.filter(item => item.done)
+  }
   
-
-
-  
+// filter에 맞게 state를 걸러서 <li> 목록을 그리기
+  $list.innerHTML = `
+    ${filterState.map(todo => `
+      <li data-id="${todo.id}" class="${todo.done ? 'done' : ''}">
+      <input type="checkbox" class="checkbox" ${todo.done ? 'checked' : ''}>
+        <span>${todo.text}</span>
+        <button class="delete-btn">삭제</button>
+      </li>
+    `).join('')}
+  `
 }
 
 $list.addEventListener('click', (e) => {
-
-
   const li = e.target.closest('li')
   const id = li.dataset.id;
 
@@ -53,12 +64,7 @@ function addTodo(text) {
       </li>
     `).join('')}
   `
-
 }
-
-
-
-
 
 // 이벤트 배선(비어있는 콜백만 제공)
 $form.addEventListener('submit', (e) => {
@@ -74,9 +80,13 @@ $form.addEventListener('submit', (e) => {
 
 });
 
+
 $filter.addEventListener('click', (e) => {
-  console.log()
-  // TODO: data-filter 읽어 filter 변경 → render
+  filter = e.target.dataset.filter;
+  [...$filter.children].forEach(($btn) => {
+    $btn.classList.toggle('is-active',$btn.dataset.filter === filter)
+  })
+  render()
 });
 
 // 초기 호출
