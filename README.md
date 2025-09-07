@@ -21,3 +21,13 @@
 
 - [ ]  새로고침 시 목록 유지
 - [ ]  새로고침 시 필터 상태 유지
+
+
+
+1. mutatations 객체로 상태 변경 함수 분리
+    1. storekey, filter 적용
+2. selectors 객체로 상태 조회 함수 분리
+    1. 
+3. 코드 중복 제거
+    1. localstorage
+4. 함수 책임 명확화
