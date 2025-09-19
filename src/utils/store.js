@@ -1,8 +1,6 @@
-
-
 const getUid = () => Math.random().toString(36).slice(2, 9);
 
-let state = []; 
+let state = [];
 
 // 💡 mutations(상태 변경)
 const mutations = {
@@ -27,14 +25,22 @@ const mutations = {
 
   // 완료 여부 토글
   toggle(id) {
-    state = state.map(todo =>
+    state = state.map((todo) =>
       todo.id === id ? { ...todo, done: !todo.done } : todo
     );
   },
 
+  // 할 일 수정
+  edit(id, newText) {
+    const text = (newText ?? "").toString().trim();
+    if (!text) return; // 빈 문자열 방지
+
+    state = state.map((todo) => (todo.id === id ? { ...todo, text } : todo));
+  },
+
   // 할 일 삭제
   delete(id) {
-    state = state.filter(todo => todo.id !== id);
+    state = state.filter((todo) => todo.id !== id);
   },
 };
 
@@ -43,21 +49,20 @@ const mutations = {
 const selectors = {
   all: (s) => s,
   visible: (s, filter) => {
-    if (filter === 'active') return s.filter(t => !t.done);
-    if (filter === 'done')   return s.filter(t =>  t.done);
+    if (filter === "active") return s.filter((t) => !t.done);
+    if (filter === "done") return s.filter((t) => t.done);
     return s;
   },
 };
 
 const storage = {
-    set(key, state) {
-        localStorage.setItem(key, JSON.stringify(state));
-    },
-    get(key) {
-        const raw = localStorage.getItem(key)
-        return raw ? JSON.parse(raw) : null
-    }
-}
+  set(key, state) {
+    localStorage.setItem(key, JSON.stringify(state));
+  },
+  get(key) {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  },
+};
 
-export { state, mutations, storage, selectors }; 
-
+export { state, mutations, storage, selectors };
