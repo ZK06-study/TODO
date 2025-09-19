@@ -42,6 +42,11 @@ const mutations = {
   delete(id) {
     state = state.filter((todo) => todo.id !== id);
   },
+
+  // 완료된 할 일 모두 삭제
+  clearCompleted() {
+    state = state.filter((todo) => !todo.done);
+  },
 };
 
 // 💡 selectors(상태 조회)
@@ -53,6 +58,7 @@ const selectors = {
     if (filter === "done") return s.filter((t) => t.done);
     return s;
   },
+  hasCompleted: (s) => s.some((todo) => todo.done),
 };
 
 const storage = {

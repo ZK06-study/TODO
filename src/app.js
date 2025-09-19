@@ -23,6 +23,7 @@ const $form = document.querySelector("#todo-form");
 const $input = document.querySelector("#todo-input");
 const $list = document.querySelector("#todo-list");
 const $filter = document.querySelector(".filters");
+const $clearCompleted = document.querySelector("#clear-completed");
 
 // 상태 변경 + 렌더링 + 로컬스토리지 저장
 function commit(mutFn) {
@@ -50,6 +51,10 @@ function render() {
       )
       .join("")}
   `;
+
+  $clearCompleted.style.display = selectors.hasCompleted(state)
+    ? "block"
+    : "none";
 }
 
 // 삭제
@@ -151,6 +156,13 @@ $filter.addEventListener("click", (e) => {
   saveFilter(filter); // 필터 상태를 localStorage에 저장
   updateFilterUI(filter); // 필터 UI 업데이트
   render();
+});
+
+// 완료된 할 일 모두 삭제
+$clearCompleted.addEventListener("click", () => {
+  if (confirm("완료된 할 일을 모두 삭제하시겠습니까?")) {
+    commit(() => mutations.clearCompleted());
+  }
 });
 
 // 초기화
